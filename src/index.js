@@ -1,29 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-  getChores()
-  //--------------------------- Fetch Actions (REST/CRUD) ------------------------------
-  function getChores(){
-    fetch('http://localhost:3000/chores')
-    .then(res => res.json())
-    .then(choreObject)
-  }
-
-  function postChore(choreObj){
-    fetch('http://localhost:3000/chores', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(choreObj)
-    })
-    .then(res => res.json())
-    .then(choreObject)
-  }
-
-  function deleteChore(choreID){
-    fetch(`http://localhost:3000/chores/${choreID}`, {
-      method:"DELETE"})
-    }
-
+  Adapter.getChores()
+    .then(choreObjectIsolation)
 
 // ---------------------Grab Container divs from html ----------------
   const choreList = document.getElementById('chore-list')
@@ -45,11 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
       duration: durationInput
     }
 
-    postChore(choreObject)
+    Adapter.postChore(choreObject)
+      .then(choreObjectIsolation)
     newChoreForm.reset()
   }
 
-  function choreObject(res){ //Takes responce from both GET and POST methods and gives correct format to dispalyChores()
+  function choreObjectIsolation(res){ //Takes responce from both GET and POST methods and gives correct format to dispalyChores()
     if (Array.isArray(res)) {
       res.forEach(chore => displayChores(chore))
     }else{
@@ -76,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.target.className == "delete-button"){
       event.target.parentElement.remove()
       let choreID = event.target.getAttribute('data-id')
-      deleteChore(choreID)
+      Adapter.deleteChore(choreID)
     }
   }
 
