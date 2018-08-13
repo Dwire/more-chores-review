@@ -1,14 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-
+  getChores()
   const choreList = document.getElementById('chore-list')
   const newChoreFormSubmit = document.getElementById('submit-btn')
   choreList.addEventListener('click', deleteChore)
   newChoreFormSubmit.addEventListener('click', newChoreInputs)
 
-
-  fetch('http://localhost:3000/chores')
-  .then(res => res.json())
-  .then(displayChores)
+  function getChores(){
+    fetch('http://localhost:3000/chores')
+    .then(res => res.json())
+    .then(displayChores)
+  }
 
 
   function newChoreInputs(e){
